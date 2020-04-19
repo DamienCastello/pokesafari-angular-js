@@ -1,14 +1,21 @@
 <!doctype html>
-<html lang="en" ng-app>
-  <head>
-    <meta charset="utf-8">
-    <title>My HTML File</title>
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
-    <script src="lib/angular/angular.js"></script>
-  </head>
-  <body>
+<html lang="en" ng-app="pokeApp">
 
-    <p>Nothing here {{'yet' + '!'}}</p>
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+  <script src="lib/angular/angular.js"></script>
+  <script src="app.module.js"></script>
+    <script src="pokemon-list/pokemon-list.module.js"></script>
+    <script src="pokemon-list/pokemon-list.component.js"></script>
+</head>
 
-  </body>
+<body>
+
+  <!-- Use a custom component to render a list of pokemons -->
+  <pokemon-list></pokemon-list>
+
+</body>
+
 </html>

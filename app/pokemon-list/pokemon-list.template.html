@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="$ctrl.query" />
+
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+      <ul>
+        <li ng-repeat="pokemon in $ctrl.pokemons | filter:$ctrl.query">
+          <span>{{pokemon.name}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
