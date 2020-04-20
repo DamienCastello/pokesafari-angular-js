@@ -1,18 +1,25 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
-
-      Search: <input ng-model="$ctrl.query" />
-
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
-      <ul>
-        <li ng-repeat="pokemon in $ctrl.pokemons | filter:$ctrl.query">
-          <span>{{pokemon.name}}</span>
-        </li>
-      </ul>
-    </div>
+<div class="Pokedex">
+  <div class="info-container">
+      <div class="info">
+          <h2>POKEMON CATCHED :</h2>
+          <h2>0</h2>
+      </div>
+      <div class="info">
+          <h2>POKEMON ESCAPED :</h2>
+          <h2>0</h2>
+      </div>
+      <div class="poke-btn">
+          <button>
+              <img src="../img/pokemons/planet.png" alt="map_icon" style="width:100px" />
+          </button>
+      </div>
   </div>
+  <section class="poke-list">
+      <!--How can i take id before iteration ? ...-->
+      <button class="poke-cell" ng-repeat="pokemon in $ctrl.pokemons | filter:$ctrl.query | orderBy:$ctrl.orderProp" ng-click="$ctrl.redirectToDetail()">
+        <img src={{pokemon.sprites.front_default}} alt="sprite of pokemon" style="background-color: white; background-image: url('https://www.transparenttextures.com/patterns/bright-squares.png');">
+      </button>
+  </section>
 </div>
+
+<!--class={{$ctrl.getClass(pokemon.id,$ctrl.escaped,$ctrl.catched)}} -->
