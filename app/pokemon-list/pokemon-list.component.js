@@ -6,6 +6,7 @@ angular.
   component('pokemonList', {
     templateUrl: 'pokemon-list/pokemon-list.template.html',
     controller: function PokemonListController($http) {
+      // METHODS & VARIABLES:
       var self = this;
       self.orderProp = 'id';
 
@@ -13,30 +14,22 @@ angular.
         alert("hello" + id)
       };
 
-      self.escaped = [];
-      self.catched = [];
+      self.isReady = false;
+      self.escaped = [2, 4];
+      self.catched = [1, 3];
       self.classes = [];
-      self.getClass = function getClass(data, escapedPokemon, catchedPokemon) {
-       /*  escapedPokemon.map((escaped)=>{
-          if(escaped===id){
-           console.log('escaped', escaped, id)
-           self.classes.push('escaped');
-            return 'escaped'
-          }   
-         });
-         catchedPokemon.map((catched, id)=>{
-           if(catched===id){
-             console.log('catched', catched)
-             self.classes.push('catched');
-             return 'catched'
-           }   
-          });
-          console.log('unknown')
-          self.classes.push('unknown');
-          return 'unknown';  */
 
-
+      self.getClass = function getClass(id, escapedPokemons, catchedPokemons) {
+          if(escapedPokemons.includes(id)){
+            return "escaped";
+          } else if (catchedPokemons.includes(id)) {
+            return "catched";
+          } else {
+            return "unknown";
+          }
       }
+
+      //FETCH DATA :
       $http.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=151.json').then(function (response) {
         console.log("check response", response.data);
         self.pokemonListUrl = response.data.results;
@@ -44,35 +37,18 @@ angular.
       self.pokemonListUrl.map((pokemonUrl)=>{
         $http.get(pokemonUrl.url).then(function(res){
           self.pokemons.push(res.data);
-          //self.getClass(res.data, self.escaped, self.catched)
-
-          /*
-          //just push into arrays to simulate escaped or catched
-          if(res.data.id===1){
-            self.escaped.push(res.data)
-          }
-          if(res.data.id===2){
-            self.catched.push(res.data)
-          }
-          //now test if includes
-          console.log("check", self.pokemons)
-          if(self.escaped.includes(self.pokemons[res.data.id])){
-            self.classes.push("escaped")
-          } else if (self.catched.includes(self.pokemons[res.data.id])){
-            self.classes.push("catched")
-          } else {
-            self.classes.push("unknown")
-          }
-          */
-         
         });
       });
-
+      self.isReady = true;
+      for(let i=0;i<151;i++){
+        /* I don't understand why log of self.pokemons[i] is undefined ...
+        self.classes.push(self.getClass(self.pokemons[i].id, self.escaped, self.catched)) */
+        console.log("check", self.pokemons[i])
+      }
       console.log("check pokemons", self.pokemons)
       console.log("check arrays", self.escaped, self.catched);
       console.log("check classes", self.classes)
-      });      
+      });   
+        
     }
   });
-
-  //"background-color: #185400; background-image: url('https://www.transparenttextures.com/patterns/bright-squares.png');"

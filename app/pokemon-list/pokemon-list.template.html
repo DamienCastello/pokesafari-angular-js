@@ -1,25 +1,38 @@
 <div class="Pokedex">
-  <div class="info-container">
-      <div class="info">
-          <h2>POKEMON CATCHED :</h2>
-          <h2>0</h2>
-      </div>
-      <div class="info">
-          <h2>POKEMON ESCAPED :</h2>
-          <h2>0</h2>
-      </div>
-      <div class="poke-btn">
-          <button>
-              <img src="../img/pokemons/planet.png" alt="map_icon" style="width:100px" />
-          </button>
-      </div>
-  </div>
-  <section class="poke-list">
-      <!--How can i take id before iteration ? ...-->
-      <button class="poke-cell" ng-repeat="pokemon in $ctrl.pokemons | filter:$ctrl.query | orderBy:$ctrl.orderProp" ng-click="$ctrl.redirectToDetail()">
-        <img src={{pokemon.sprites.front_default}} alt="sprite of pokemon" style="background-color: white; background-image: url('https://www.transparenttextures.com/patterns/bright-squares.png');">
-      </button>
-  </section>
+    <div class="info-container">
+        <div class="info">
+            <h2>POKEMON CATCHED :</h2>
+            <h2>0</h2>
+        </div>
+        <div class="info">
+            <h2>POKEMON ESCAPED :</h2>
+            <h2>0</h2>
+        </div>
+        <div class="poke-btn">
+            <button>
+                <img src="../img/pokemons/planet.png" alt="map_icon" style="width:100px" />
+            </button>
+        </div>
+    </div>
+        <section class="poke-list" ng-if="$ctrl.isReady===false">
+            <div class="poke-cell">
+           <p>Loading ...</p>
+        </div>
+        </section>
+
+        <section class="poke-list" ng-if="$ctrl.isReady===true">
+            <!-- Question 1
+                How can i take id before iteration in param of redirect method ? 
+                I tried ng-click="$ctrl.redirectToDetail(pokemon.id in $ctrl.pokemons)"
+                But doesn't work ... -->
+            <button class="poke-cell"
+                ng-repeat="pokemon in $ctrl.pokemons | filter:$ctrl.query | orderBy:$ctrl.orderProp"
+                ng-click="$ctrl.redirectToDetail()">
+                <!-- Question 2
+                    Need to getClass to apply a custom background-color -->
+                <img src={{pokemon.sprites.front_default}} alt="sprite of pokemon"
+                    style="background-color: white; background-image: url('https://www.transparenttextures.com/patterns/bright-squares.png');">
+            </button>
+        </section>
 </div>
 
-<!--class={{$ctrl.getClass(pokemon.id,$ctrl.escaped,$ctrl.catched)}} -->
