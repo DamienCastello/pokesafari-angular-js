@@ -6,49 +6,63 @@ angular.
   component('pokemonList', {
     templateUrl: 'pokemon-list/pokemon-list.template.html',
     controller: function PokemonListController($http) {
-      // METHODS & VARIABLES:
-      var self = this;
-      self.orderProp = 'id';
+      // VARIABLES:
+      var vm = this;
+      vm.orderProp = 'id';
+      vm.isReady = false;
+      vm.escaped = [2, 4];
+      vm.catched = [1, 3];
+      vm.classes = [];
 
-      self.redirectToDetail = function redirectToDetail(id) {
+
+
+      //FETCH DATA :
+      vm.$onInit = function () {
+        console.log("enter in init")
+        $http.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=151.json').then(function (response) {
+          console.log("check response", response.data);
+          vm.pokemonListUrl = response.data.results;
+          vm.pokemons = [];
+          var promises = vm.pokemonListUrl.map((pokemonUrl) => {
+            return $http.get(pokemonUrl.url);
+          });
+          Promise.all(promises)
+            .then(function (pokemonsListDetails) {
+              vm.pokemons = pokemonsListDetails.map((detail)=>{
+                return detail.data;
+              });
+              
+              console.log("check pokemons", vm.pokemons)
+              for (let i = 0; i < 151; i++) {
+                //console.log("check", vm.pokemons[i])
+              }
+              vm.isReady = true;
+
+            })
+            .catch(function (error) {
+              console.log("error on fetch list details: ", error);
+            });
+        })
+          .catch(function (error) {
+            console.log("error on fetch list URL: ", error);
+          });
+          
+      }
+
+      // METHODS & FUNCTIONS
+      vm.redirectToDetail = function redirectToDetail(id) {
         alert("hello" + id)
       };
 
-      self.isReady = false;
-      self.escaped = [2, 4];
-      self.catched = [1, 3];
-      self.classes = [];
-
-      self.getClass = function getClass(id, escapedPokemons, catchedPokemons) {
-          if(escapedPokemons.includes(id)){
-            return "escaped";
-          } else if (catchedPokemons.includes(id)) {
-            return "catched";
-          } else {
-            return "unknown";
-          }
+      vm.getClass = function getClass(id, escapedPokemons, catchedPokemons) {
+        if (escapedPokemons.includes(id)) {
+          return "escaped";
+        } else if (catchedPokemons.includes(id)) {
+          return "catched";
+        } else {
+          return "unknown";
+        }
       }
 
-      //FETCH DATA :
-      $http.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=151.json').then(function (response) {
-        console.log("check response", response.data);
-        self.pokemonListUrl = response.data.results;
-        self.pokemons = [];
-      self.pokemonListUrl.map((pokemonUrl)=>{
-        $http.get(pokemonUrl.url).then(function(res){
-          self.pokemons.push(res.data);
-        });
-      });
-      self.isReady = true;
-      for(let i=0;i<151;i++){
-        /* I don't understand why log of self.pokemons[i] is undefined ...
-        self.classes.push(self.getClass(self.pokemons[i].id, self.escaped, self.catched)) */
-        console.log("check", self.pokemons[i])
-      }
-      console.log("check pokemons", self.pokemons)
-      console.log("check arrays", self.escaped, self.catched);
-      console.log("check classes", self.classes)
-      });   
-        
     }
   });
